@@ -1,5 +1,4 @@
 require "rails_responsive_rater/version"
-require 'rails_responsive_rater/engine'
 
 module RailsResponsiveRater
   # Your code goes here...
