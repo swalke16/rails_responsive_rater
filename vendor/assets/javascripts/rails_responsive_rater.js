@@ -16,10 +16,12 @@
         $item.data('rater-readonly', $item.data('rater-readonly') !== undefined ? $item.data("rater-readonly") : options.readonly)
         $item.data('rater-field', $item.data('rater-field') || options.field)
         $item.data('rater-value', $item.data('rater-value') || options.min)
+        $item.data('rater-content', $item.data('rater-content') || options.content)
 
 
         var field = $item.data("rater-field");
         if (field) {
+          field = $(field);
           $item.data('rater-value', field.hide().val());
 
           if (field[0].nodeName == 'INPUT') {
@@ -37,7 +39,8 @@
 
         //Create the necessary tags.
         for(var i=0; i<$item.data('rater-max'); i++){
-          $item.append('<a class="rating" href="#"></a>');
+          //TODO: font size needs to scale with # of stars
+          $item.append('<span class="rating style="width: ' + (100 / $item.data("rater-max")) + '%;">' + $item.data("rater-content") + '</span>');
         }
 
         $item.data('rater-init', true);
@@ -52,13 +55,13 @@
       if (!$item.data('rater-readonly')) {
 
         if (!$item.data('rater-bound')) {
-          $item.on("hover", ".rating", function(){
+          $item.on("mouseenter mouseleave", ".rating", function(){
             $(this).toggleClass('hover').prevAll().toggleClass('hover');
           });
 
           $item.on("click", ".rating", function(e) {
             e.preventDefault();
-            var newValue = $item.children().index(this);
+            var newValue = $item.children().index(this) + 1;
 
             if( $(this).hasClass('rated') && !$(this).nextAll().hasClass('.rated') && $(this).prevAll().hasClass('rated')){
               $(this).removeClass('rated').siblings().removeClass('rated');
@@ -82,19 +85,24 @@
       }
 
     },
+
     value : function(value)    {
       if( typeof(value) != "undefined") {
         $(this).data("rater-value", value);
-      else
+      }
+      else {
         return $(this).data("rater-value");
       }
-    }
+    },
+
     readonly : function(value) {
       if( typeof(value) != "undefined") {
         $(this).data("rater-readonly", value);
-        if (!value) item.unbind();
+        // TODO: re-enable bindings on read-only false
+        if (value) $(this).unbind();
         $(this).data("rater-bound", false);
-      else
+      }
+      else {
         return $(this).data("rater-readonly");
       }
     }
@@ -116,7 +124,7 @@
     });
   };
 
-  $.fn.responsiveRater.defaults = { min: 0, max: 5, readonly: false };
+  $.fn.responsiveRater.defaults = { content: "&#9733", min: 0, max: 5, readonly: false };
 
   //invoke it on all div.rateit elements. This could be removed if not wanted.
   $(function () { $('div.responsive-rater').responsiveRater(); });

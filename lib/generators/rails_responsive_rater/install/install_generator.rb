@@ -6,6 +6,8 @@ module RailsResponsiveRater
 
       desc "This generator installs the Rails Responsive Rater plugin"
 
+      #TODO: inject into other files like scss, sass, .js.coffee
+
       def inject_javascript
         inject_into_file "app/assets/javascripts/application.js", "//= require rails_responsive_rater\n", :after => "//= require jquery\n"
       end
