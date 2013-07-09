@@ -9,11 +9,11 @@ module RailsResponsiveRater
       #TODO: inject into other files like scss, sass, .js.coffee
 
       def inject_javascript
-        inject_into_file "app/assets/javascripts/application.js", "//= require rails_responsive_rater\n", :after => "//= require jquery\n"
+        inject_into_file "app/assets/javascripts/application.js", "//= require jquery.responsive-rater\n", :after => "//= require jquery\n"
       end
 
       def inject_stylesheet
-        inject_into_file "app/assets/stylesheets/application.css", "*= require rails_responsive_rater\n", :after => "/*\n"
+        inject_into_file "app/assets/stylesheets/application.css", "*= require jquery.responsive-rater\n", :after => "/*\n"
       end
     end
   end
