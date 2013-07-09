@@ -52,6 +52,12 @@
         $item.find('.rating:lt(' + score + ')').addClass("rated");
       }
 
+      methods.bindEvents.call(this);
+    },
+
+    bindEvents : function() {
+      var $item = $(this);
+
       if (!$item.data('rater-readonly')) {
 
         if (!$item.data('rater-bound')) {
@@ -61,15 +67,20 @@
 
           $item.on("click", ".rating", function(e) {
             e.preventDefault();
-            var newValue = $item.children().index(this) + 1;
+            var newValue, event;
 
-            if( $(this).hasClass('rated') && !$(this).nextAll().hasClass('.rated') && $(this).prevAll().hasClass('rated')){
+            if( $(this).hasClass('rated') && $(this).nextAll(".rated").length === 0 ){
+              // reseting the value
+              newValue = $item.data('rater-min');
+              event = "reset";
+
               $(this).removeClass('rated').siblings().removeClass('rated');
             }
-            else if( $(this).first().hasClass('rated') && !$(this).nextAll().hasClass('rated') ){
-              $(this).removeClass('rated').siblings().removeClass('rated')
-            }
             else {
+              // setting a new value
+              newValue = $item.children().index(this) + 1;
+              event = "rated";
+
               $(this).addClass('rated').prevAll().addClass('rated').end().nextAll().removeClass('rated')
             }
 
@@ -77,13 +88,13 @@
               $($item.data('rater-field')).val(newValue);
             }
 
-            $item.trigger('rated', [newValue]);
+            $item.data('rater-value', newValue);
+            $item.trigger(event, [newValue]);
           });
 
           $item.data("rater-bound", true);
         }
       }
-
     },
 
     value : function(value)    {
@@ -98,9 +109,14 @@
     readonly : function(value) {
       if( typeof(value) != "undefined") {
         $(this).data("rater-readonly", value);
-        // TODO: re-enable bindings on read-only false
-        if (value) $(this).unbind();
-        $(this).data("rater-bound", false);
+
+        if (value) {
+          $(this).unbind();
+          $(this).data("rater-bound", false);
+        }
+        else {
+          methods.bindEvents.call(this);
+        }
       }
       else {
         return $(this).data("rater-readonly");
@@ -111,12 +127,14 @@
   $.fn.responsiveRater = function(methodOrOptions){
     if (this.length == 0) return this;
 
+    var args = arguments;
+
     return this.each(function() {
 
       if ( methods[methodOrOptions] ) {
-          return methods[ methodOrOptions ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+          return methods[ methodOrOptions ].apply( this, Array.prototype.slice.call( args, 1 ));
       } else if ( typeof methodOrOptions === 'object' || ! methodOrOptions ) {
-          return methods.init.apply( this, arguments );
+          return methods.init.apply( this, args );
       } else {
           $.error( 'Method ' +  method + ' does not exist on jQuery.responsiveRater' );
       }
@@ -126,7 +144,6 @@
 
   $.fn.responsiveRater.defaults = { content: "&#9733", min: 0, max: 5, readonly: false };
 
-  //invoke it on all div.rateit elements. This could be removed if not wanted.
   $(function () { $('div.responsive-rater').responsiveRater(); });
 
 }( jQuery ));
