@@ -60,7 +60,7 @@ The helper can take a hash of options to override the defaults and customize the
   * max       - (5) maximum rating value, also corresponds to how many rating items to display.
   * readonly  - (false) control whether the user can change the displayed rating.
   * value     - (min) the value of the rating to start with.
-  * content   - (&#9733;) the content to use for the rating display. This can be any valid HTML. Let your imagination go wild!
+  * content   - (&#9733;) the content to use for the rating display. This can be any valid HTML. Because it's just HTML it's fully styleable with things like CSS animations, transitions, etc... Let your imagination go wild!
 
 ### Client-side API
 
