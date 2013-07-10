@@ -89,6 +89,8 @@ This is written as a jQuery plugin and its API functions as other jQuery plugins
       // do something with new value here
     });
 
+### Example Page
+  See the <a href="http://swalke16.github.io/rails_responsive_rater" target="_blank">example page</a> to see what the rater looks and functions like.
 
 ## Credits
   [Derek Briggs](https://github.com/derekbriggs) - for the idea to go the responsive route in the first place, making the styles work, creating an example page, and generally being awesome.
