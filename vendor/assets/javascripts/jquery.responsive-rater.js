@@ -40,7 +40,7 @@
         //Create the necessary tags.
         for(var i=0; i<$item.data('rater-max'); i++){
           //TODO: font size needs to scale with # of stars
-          $item.append('<span class="rating style="width: ' + (100 / $item.data("rater-max")) + '%;">' + $item.data("rater-content") + '</span>');
+          $item.append('<span class="rating" style="width: ' + (100 / $item.data("rater-max")) + '%;">' + $item.data("rater-content") + '</span>');
         }
 
         $item.data('rater-init', true);
