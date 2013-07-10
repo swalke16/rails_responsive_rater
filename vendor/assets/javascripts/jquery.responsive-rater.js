@@ -27,8 +27,8 @@
           if (field[0].nodeName == 'INPUT') {
             if (field[0].type == 'range' || field[0].type == 'text') { //in browsers not support the range type, it defaults to text
 
-              $item.data('rater-min', parseInt(fld.attr('min')) || $item.data('rater-min')); //if we would have done fld[0].min it wouldn't have worked in browsers not supporting the range type.
-              $item.data('rater-max', parseInt(fld.attr('max')) || $item.data('rater-max'));
+              $item.data('rater-min', parseInt(field.attr('min')) || $item.data('rater-min')); //if we would have done fld[0].min it wouldn't have worked in browsers not supporting the range type.
+              $item.data('rater-max', parseInt(field.attr('max')) || $item.data('rater-max'));
             }
           }
           if (field[0].nodeName == 'SELECT' && field[0].options.length > 1) {
@@ -73,22 +73,14 @@
               // reseting the value
               newValue = $item.data('rater-min');
               event = "reset";
-
-              $(this).removeClass('rated').siblings().removeClass('rated');
             }
             else {
               // setting a new value
               newValue = $item.children().index(this) + 1;
               event = "rated";
-
-              $(this).addClass('rated').prevAll().addClass('rated').end().nextAll().removeClass('rated')
             }
 
-            if ($item.data('rater-field')) {
-              $($item.data('rater-field')).val(newValue);
-            }
-
-            $item.data('rater-value', newValue);
+            methods.value.call($item, newValue);
             $item.trigger(event, [newValue]);
           });
 
@@ -99,6 +91,16 @@
 
     value : function(value)    {
       if( typeof(value) != "undefined") {
+        var $ratings = $(this).find(".rating").removeClass("rated");
+
+        if( value > $(this).data('rater-min') ) {
+          $ratings.eq(value - 1).addClass("rated").prevAll().addClass("rated");
+        }
+
+        if ($(this).data('rater-field')) {
+          $($(this).data('rater-field')).val(value);
+        }
+
         $(this).data("rater-value", value);
       }
       else {
