@@ -14,4 +14,5 @@ Gem::Specification.new do |gem|
   gem.name          = "rails_responsive_rater"
   gem.require_paths = ["lib"]
   gem.version       = RailsResponsiveRater::VERSION
+  gem.license       = "MIT"
 end
