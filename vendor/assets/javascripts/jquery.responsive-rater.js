@@ -7,6 +7,8 @@
       var $item = $(this);
 
       if (!$item.data('rater-init')) {
+        // remove any elements that may be hanging out
+        $item.empty();
 
         if (!$item.hasClass('responsive-rater')) $item.addClass('responsive-rater');
 
